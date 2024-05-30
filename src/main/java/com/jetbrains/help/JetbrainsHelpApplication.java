@@ -38,10 +38,14 @@ public class JetbrainsHelpApplication {
 
         InetAddress localHost = InetAddress.getLocalHost();
         String address = CharSequenceUtil.format("http://{}:{}", localHost.getHostAddress(), SpringUtil.getProperty("server.port"));
-        String runSuccessWarn = "\n====================================================================================\n" +
-                "                         Jetbrains-Help Run Success~                                \n" +
-                "                         address:" + address + "                                    \n" +
-                "====================================================================================\n";
+        String runSuccessWarn = """
+                \n
+                ====================================================================================
+                                         Jetbrains-Help Run Success~
+                                         address: %s
+                ====================================================================================
+                \n
+                """.formatted(address);
         log.info(runSuccessWarn);
     }
 
