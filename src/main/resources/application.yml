@@ -6,6 +6,9 @@ spring:
 server:
   port: 10768
 help:
-  default-license-name: 光云
-  default-assignee-name: 藏柏
-  default-expiry-date: 2111-11-11
+  product-id: dbeaver-ue
+  product-version: 24.0
+  default-email: Yamato@Azuelane.com
+  default-license-name: Azuelane
+  default-assignee-name: Yamato
+  default-expiry-date: 2030-12-31

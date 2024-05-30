@@ -1,1 +1,1 @@
-docker build -t jetbrains-help .
+docker build -t luxcis/jetbrains-helper:java .

@@ -18,7 +18,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -59,22 +58,19 @@ public class AgentContextHolder {
         } catch (IORuntimeException e) {
             throw new IllegalArgumentException(CharSequenceUtil.format("{} File read failed", POWER_CONF_FILE_NAME), e);
         }
-        return CharSequenceUtil.containsAll(powerConfStr, "[Result]", "EQUAL,");
+        return CharSequenceUtil.containsAll(powerConfStr, "[Result]", "[Args]", "EQUAL,");
     }
 
     private static void loadPowerConf() {
-        CompletableFuture
-                .supplyAsync(AgentContextHolder::generatePowerConfigRule)
-                .thenApply(AgentContextHolder::generatePowerConfigStr)
-                .thenAccept(AgentContextHolder::overridePowerConfFileContent)
-                .exceptionally(throwable -> {
-                    log.error("agent context init or refresh failed", throwable);
-                    return null;
-                }).join();
+        String resultRule = AgentContextHolder.generateResultPowerConfigRule();
+        resultRule = AgentContextHolder.generateResultPowerConfigStr(resultRule);
+        String argsRule = AgentContextHolder.generateArgsPowerConfigRule();
+        argsRule = AgentContextHolder.generateArgsPowerConfigStr(argsRule);
+        AgentContextHolder.overridePowerConfFileContent(resultRule + "\n" + argsRule);
     }
 
     @SneakyThrows
-    private static String generatePowerConfigRule() {
+    private static String generateResultPowerConfigRule() {
         X509Certificate crt = (X509Certificate) KeyUtil.readX509Certificate(IoUtil.toStream(CertificateContextHolder.crtFile()));
         RSAPublicKey publicKey = (RSAPublicKey) PemUtil.readPemPublicKey(IoUtil.toStream(CertificateContextHolder.publicKeyFile()));
         RSAPublicKey rootPublicKey = (RSAPublicKey) PemUtil.readPemPublicKey(IoUtil.toStream(CertificateContextHolder.rootKeyFile()));
@@ -85,8 +81,21 @@ public class AgentContextHolder {
         return CharSequenceUtil.format("EQUAL,{},{},{}->{}", x, y, z, r);
     }
 
-    private static String generatePowerConfigStr(String ruleValue) {
+    private static String generateResultPowerConfigStr(String ruleValue) {
         return CharSequenceUtil.builder("[Result]", "\n", ruleValue).toString();
+    }
+
+    @SneakyThrows
+    private static String generateArgsPowerConfigRule() {
+        RSAPublicKey rootPublicKey = (RSAPublicKey) PemUtil.readPemPublicKey(IoUtil.toStream(CertificateContextHolder.dbeaverRootKeyFile()));
+        RSAPublicKey publicKey = (RSAPublicKey) PemUtil.readPemPublicKey(IoUtil.toStream(CertificateContextHolder.dbeaverPublicKeyFile()));
+        BigInteger x = rootPublicKey.getModulus();
+        BigInteger y = publicKey.getModulus();
+        return CharSequenceUtil.format("EQUAL,65537,{}->65537,{}", x, y);
+    }
+
+    private static String generateArgsPowerConfigStr(String ruleValue) {
+        return CharSequenceUtil.builder("[Args]", "\n", ruleValue).toString();
     }
 
     private static void overridePowerConfFileContent(String configStr) {

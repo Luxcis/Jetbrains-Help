@@ -1,6 +1,11 @@
 [
   {
-    "name": "All Jetbrains's Product Or Plugin",
+    "name": "Dbeaver",
+    "productCode": "Dbeaver",
+    "iconClass": "icon-dbe"
+  },
+  {
+    "name": "All In One",
     "productCode": "",
     "iconClass": "icon-al"
   },

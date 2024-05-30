@@ -1,7 +1,6 @@
 package com.jetbrains.help.context;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.IdUtil;
@@ -10,15 +9,23 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.SignUtil;
 import cn.hutool.crypto.asymmetric.Sign;
 import cn.hutool.json.JSONUtil;
+import com.jetbrains.help.dbeaver.License;
+import com.jetbrains.help.dbeaver.LicenseType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.crypto.Cipher;
+import java.io.ByteArrayOutputStream;
+import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +35,7 @@ import static cn.hutool.crypto.asymmetric.SignAlgorithm.SHA1withRSA;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LicenseContextHolder {
 
-    public static String generateLicense(String licensesName, String assigneeName, String expiryDate, Set<String> productCodeSet) {
+    public static String generateJetbrainsLicense(String licensesName, String assigneeName, String expiryDate, Set<String> productCodeSet) {
         String licenseId = IdUtil.fastSimpleUUID();
         List<Product> products = productCodeSet.stream()
                 .map(productCode -> new Product()
@@ -74,4 +81,42 @@ public class LicenseContextHolder {
         private String paidUpTo;
     }
 
+    @SneakyThrows
+    public static String generateDbeaverLicense(String productId, String productVersion, String company, String name, String email) {
+        PrivateKey privateKey = PemUtil.readPemPrivateKey(IoUtil.toStream(CertificateContextHolder.dbeaverPrivateKeyFile()));
+        License license = new License("JL-0FB16-000A2GC", LicenseType.ULTIMATE, new Date(), new Date(), null, License.FLAG_UNLIMITED_SERVERS, productId, productVersion, "10000", company, name, email);
+        byte[] licenseData = license.getData();
+        byte[] licenseEncrypted = encrypt(licenseData, privateKey);
+        return Base64.encode(licenseEncrypted);
+    }
+
+    public static byte[] encrypt(byte[] data, Key key) throws Exception {
+        return cipherAsymmetric(data, key, 1);
+    }
+
+    public static byte[] cipherAsymmetric(byte[] data, Key key, int mode) throws Exception {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        int chunkSize = mode == 2 ? 256 : 245;
+        int chunkCount = data.length / chunkSize;
+        if (data.length % chunkSize > 0) {
+            ++chunkCount;
+        }
+
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+
+        for (int i = 0; i < chunkCount; ++i) {
+            cipher.init(mode, key);
+            int offset = i * chunkSize;
+            int length = chunkSize;
+            if (offset + chunkSize > data.length) {
+                length = data.length - chunkSize * i;
+            }
+
+            byte[] segment = Arrays.copyOfRange(data, offset, offset + length);
+            byte[] segmentEncrypted = cipher.doFinal(segment);
+            buffer.write(segmentEncrypted);
+        }
+
+        return buffer.toByteArray();
+    }
 }

@@ -1,19 +1,14 @@
 package com.jetbrains.help.route;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
-import com.jetbrains.help.JetbrainsHelpApplication;
 import com.jetbrains.help.context.AgentContextHolder;
 import com.jetbrains.help.context.PluginsContextHolder;
 import com.jetbrains.help.context.ProductsContextHolder;
 import com.jetbrains.help.properties.JetbrainsHelpProperties;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

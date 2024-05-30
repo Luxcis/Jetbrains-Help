@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("help")
 public class JetbrainsHelpProperties {
-
+    private String productId;
+    private String productVersion;
+    private String defaultEmail;
     private String defaultLicenseName;
-
     private String defaultAssigneeName;
-
     private String defaultExpiryDate;
 }

@@ -36,13 +36,17 @@ public class CertificateContextHolder {
     private static final String PUBLIC_KEY_FILE_NAME = "external/certificate/public.key";
     private static final String CET_FILE_NAME = "external/certificate/ca.crt";
 
+    private static final String DBEAVER_ROOT_KEY_FILE_NAME = "external/certificate/dbeaverRoot.key";
+    private static final String DBEAVER_PUBLIC_KEY_FILE_NAME = "external/certificate/dbeaverPublic.key";
+    private static final String DBEAVER_PRIVATE_KEY_FILE_NAME = "external/certificate/dbeaverPrivate.key";
+
     private static File rootKeyFile;
-
     private static File privateKeyFile;
-
     private static File publicKeyFile;
-
     private static File crtFile;
+    private static File dbeaverRootKeyFile;
+    private static File dbeaverPublicKeyFile;
+    private static File dbeaverPrivateKeyFile;
 
     public static void init() {
         log.info("certificate context init loading...");
@@ -52,15 +56,18 @@ public class CertificateContextHolder {
                 || !FileTools.fileExists(CET_FILE_NAME)) {
             log.info("certificate context generate loading...");
             generateCertificate();
+            generateDbeaverKey();
             log.info("certificate context generate success!");
         } else {
             privateKeyFile = FileTools.getFileOrCreat(PRIVATE_KEY_FILE_NAME);
             publicKeyFile = FileTools.getFileOrCreat(PUBLIC_KEY_FILE_NAME);
             crtFile = FileTools.getFileOrCreat(CET_FILE_NAME);
+            dbeaverPublicKeyFile = FileTools.getFileOrCreat(DBEAVER_PUBLIC_KEY_FILE_NAME);
+            dbeaverPrivateKeyFile = FileTools.getFileOrCreat(DBEAVER_PRIVATE_KEY_FILE_NAME);
+            dbeaverRootKeyFile = FileTools.getFileOrCreat(DBEAVER_ROOT_KEY_FILE_NAME);
         }
         log.info("certificate context init success !");
     }
-
 
     public static File rootKeyFile() {
         return CertificateContextHolder.rootKeyFile;
@@ -76,6 +83,18 @@ public class CertificateContextHolder {
 
     public static File crtFile() {
         return CertificateContextHolder.crtFile;
+    }
+
+    public static File dbeaverRootKeyFile() {
+        return CertificateContextHolder.dbeaverRootKeyFile;
+    }
+
+    public static File dbeaverPublicKeyFile() {
+        return CertificateContextHolder.dbeaverPublicKeyFile;
+    }
+
+    public static File dbeaverPrivateKeyFile() {
+        return CertificateContextHolder.dbeaverPrivateKeyFile;
     }
 
     public static void generateCertificate() {
@@ -107,5 +126,14 @@ public class CertificateContextHolder {
         }
     }
 
-
+    public static void generateDbeaverKey() {
+        KeyPair keyPair = SecureUtil.generateKeyPair("RSA", 2048);
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+        dbeaverPublicKeyFile = FileTools.getFileOrCreat(DBEAVER_PUBLIC_KEY_FILE_NAME);
+        PemUtil.writePemObject("PUBLIC KEY", publicKey.getEncoded(), FileUtil.getWriter(dbeaverPublicKeyFile, StandardCharsets.UTF_8, false));
+        dbeaverPrivateKeyFile = FileTools.getFileOrCreat(DBEAVER_PRIVATE_KEY_FILE_NAME);
+        PemUtil.writePemObject("PRIVATE KEY", privateKey.getEncoded(), FileUtil.getWriter(dbeaverPrivateKeyFile, StandardCharsets.UTF_8, false));
+        dbeaverRootKeyFile = FileTools.getFileOrCreat(DBEAVER_ROOT_KEY_FILE_NAME);
+    }
 }

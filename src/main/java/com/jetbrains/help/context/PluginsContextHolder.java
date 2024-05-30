@@ -146,8 +146,10 @@ public class PluginsContextHolder {
 
         @Override
         public final boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof PluginCache that)) return false;
+            if (this == o)
+                return true;
+            if (!(o instanceof PluginCache that))
+                return false;
 
             return id.equals(that.id);
         }

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Set default headers for AJAX requests
     $.ajaxSetup({
         headers: {
@@ -18,16 +18,16 @@ $(document).ready(function() {
     };
 
     // Function to handle search input
-    $('#search').on('input', function(e) {
+    $('#search').on('input', function (e) {
         $("#product-list").load('/search?search=' + e.target.value);
     });
 
     // Function to show license form
     window.showLicenseForm = function () {
         let licenseInfo = JSON.parse(localStorage.getItem('licenseInfo'));
-        $('#licenseeName').val(licenseInfo?.licenseeName || '光云');
-        $('#assigneeName').val(licenseInfo?.assigneeName || '藏柏');
-        $('#expiryDate').val(licenseInfo?.expiryDate || '2111-11-11');
+        $('#licenseeName').val(licenseInfo?.licenseeName || 'Azuelane');
+        $('#assigneeName').val(licenseInfo?.assigneeName || 'Yamato');
+        $('#expiryDate').val(licenseInfo?.expiryDate || '2030-12-31');
         $('#mask, #form').show();
     };
 
@@ -55,9 +55,23 @@ $(document).ready(function() {
         $.post('/generateLicense', JSON.stringify(data))
             .then(response => {
                 copyText(response)
-                    .then((result) => {
-                        alert(result);
+                    .then(() => {
+                        e.setAttribute('data-content', 'Copied!');
+                    })
+                    .catch(() => {
+                        e.setAttribute('data-content', 'Copy failed!');
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            e.setAttribute('data-content', 'Copy to clipboard');
+                        }, 2000);
                     });
+            })
+            .catch(() => {
+                e.setAttribute('data-content', 'Copy failed!');
+                setTimeout(() => {
+                    e.setAttribute('data-content', 'Copy to clipboard');
+                }, 2000);
             });
     };
 

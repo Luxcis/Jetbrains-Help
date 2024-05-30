@@ -6,21 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Jetbrains-Help</title>
     <link rel="stylesheet" type="text/css" href="/css/index.css">
-    <link rel="icon" href="https://www.jetbrains.com/favicon.ico?r=1234">
+    <link href="https://www.jetbrains.com/favicon.ico" rel="icon">
 </head>
 <body>
 <header class="tip sticky flex items-center py-6">
     <p>
         🇨🇳 Download <a href="ja-netfilter" title="Download jetbra first">ja-netfilter.zip</a> , and configure
         your JetBrains's <strong onclick="showVmoptins()">vmoptions!</strong> <br>
-        🇨🇳 Also you can <a onclick="showLicenseForm()">Refill license information</a> to customizer your license!</br>
+        🇨🇳 Also you can <a onclick="showLicenseForm()">Refill license information</a> to customizer your license!<br>
         <strong>🇨🇳 Please note that this page is only developed and used by <span
                 th:text="${defaults.getDefaultLicenseName()} + '/' + ${defaults.getDefaultAssigneeName()}"></span>
             personally!</strong>
     </p>
-    <form class="parent">
-        <input type="text" class="search" id="search" placeholder="Search Product or Plugin">
-    </form>
+    <div style="margin-left: 50px;">
+        <label><input class="search" id="search" placeholder="Search Product or Plugin" type="text"></label>
+    </div>
 </header>
 <main id="product-list" class="px-6 z-grid py-10" style="--space: 20rem; --gutter: 3.5rem">
     <th:block th:fragment="product-list">
@@ -40,7 +40,7 @@
                         th:text="${product.getName()}"></h1>
                     <p title="Copy to clipboard" class="truncate text-sm text-grey" onclick="copyLicense(this)"
                        data-content="Copy to clipboard">
-                        **********
+                        *********************************************************************************************************************************************************
                     </p>
                 </div>
                 <div class="mask"></div>
@@ -64,7 +64,7 @@
                         th:text="${plugin.getName()}"></h1>
                     <p title="Copy to clipboard" class="truncate text-sm text-grey" onclick="copyLicense(this)"
                        data-content="Copy to clipboard">
-                        **********
+                        *********************************************************************************************************************************************************
                     </p>
                 </div>
                 <div class="mask"></div>
