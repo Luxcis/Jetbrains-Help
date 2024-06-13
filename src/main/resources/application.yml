@@ -3,6 +3,10 @@ spring:
     name: Jetbrains-Help
   thymeleaf:
     cache: false
+  security:
+    user:
+      name: admin
+      password: admin
 server:
   port: 10768
 help:
