@@ -244,10 +244,10 @@ body {
 }
 
 .truncate {
-    /* display: -webkit-box; */
-    /* -webkit-box-orient: vertical; */
-    /* -webkit-line-clamp: var(--line, 3); */
-    /* overflow: hidden; */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--line, 3);
+    overflow: hidden;
 }
 
 .truncate-1 {
