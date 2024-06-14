@@ -65,8 +65,28 @@
     "iconClass": "icon-ds"
   },
   {
-    "name": "dotMemory",
+    "name": "DotCover",
+    "productCode": "DC",
+    "iconClass": "icon-dc"
+  },
+  {
+    "name": "DotTrace",
+    "productCode": "DNP,DP",
+    "iconClass": "icon-dpn"
+  },
+  {
+    "name": "DotMemory",
     "productCode": "DM",
     "iconClass": "icon-dm"
+  },
+  {
+    "name": "Aqua",
+    "productCode": "QA,PSI,PCWMP",
+    "iconClass": "icon-qa"
+  },
+  {
+    "name": "RustRover",
+    "productCode": "RR,PSI,PCWMP",
+    "iconClass": "icon-rr"
   }
 ]

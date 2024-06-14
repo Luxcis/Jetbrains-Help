@@ -10,6 +10,7 @@ spring:
 server:
   port: 10768
 help:
+  enable-security: false
   product-id: dbeaver-ue
   product-version: 24.0
   default-email: Yamato@Azuelane.com
