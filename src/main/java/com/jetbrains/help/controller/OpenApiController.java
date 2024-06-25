@@ -1,5 +1,8 @@
 package com.jetbrains.help.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
@@ -28,6 +31,17 @@ public class OpenApiController {
         private String assigneeName;
         private String expiryDate;
         private String productCode;
+    }
+
+    @SaIgnore
+    @PostMapping("auth")
+    public SaResult auth(String code) {
+        if (jetbrainsHelpProperties.getAuthCode().equals(code)) {
+            StpUtil.login(code);
+            return SaResult.ok();
+        } else {
+            return SaResult.error("授权码错误");
+        }
     }
 
     @PostMapping("generateLicense")

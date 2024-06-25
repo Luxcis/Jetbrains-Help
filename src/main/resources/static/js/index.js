@@ -55,6 +55,10 @@ $(document).ready(function () {
         };
         $.post('/generateLicense', JSON.stringify(data))
             .then(response => {
+                if (401 === response.code) {
+                    window.location.href = "/"
+                    return
+                }
                 copyText(response)
                     .then(() => {
                         e.setAttribute('data-content', 'Copied!');

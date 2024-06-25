@@ -1,16 +1,19 @@
+server:
+  port: 20768
 spring:
   application:
     name: Jetbrains-Help
   thymeleaf:
     cache: false
-  security:
-    user:
-      name: admin
-      password: admin
-server:
-  port: 10768
+sa-token:
+  active-timeout: 86400
+  is-concurrent: true
+  is-share: false
+  token-style: tik
+  is-log: true
 help:
-  enable-security: false
+  enable-auth: false
+  auth-code: 123
   product-id: dbeaver-ue
   product-version: 24.0
   default-email: Yamato@Azuelane.com

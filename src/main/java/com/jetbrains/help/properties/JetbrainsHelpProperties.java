@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("help")
 public class JetbrainsHelpProperties {
-    private Boolean enableSecurity;
+    private Boolean enableAuth;
+    private String authCode;
     private String productId;
     private String productVersion;
     private String defaultEmail;
