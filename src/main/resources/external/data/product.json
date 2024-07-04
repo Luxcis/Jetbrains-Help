@@ -2,91 +2,103 @@
   {
     "name": "Dbeaver",
     "productCode": "Dbeaver",
-    "iconClass": "icon-dbe"
-  },
-  {
-    "name": "All In One",
-    "productCode": "",
-    "iconClass": "icon-al"
+    "iconClass": "icon-dbe",
+    "version": "Ultimate"
   },
   {
     "name": "IntelliJ IDEA",
     "productCode": "II,PCWMP,PSI",
-    "iconClass": "icon-ii"
+    "iconClass": "icon-ii",
+    "version": "2024.1.x"
   },
   {
     "name": "PhpStorm",
     "productCode": "PS,PCWMP,PSI",
-    "iconClass": "icon-ps"
-  },
-  {
-    "name": "AppCode",
-    "productCode": "AC,PCWMP,PSI",
-    "iconClass": "icon-ac"
+    "iconClass": "icon-ps",
+    "version": "2024.1.x"
   },
   {
     "name": "DataGrip",
     "productCode": "DB,PSI,PDB",
-    "iconClass": "icon-db"
+    "iconClass": "icon-db",
+    "version": "2024.1.x"
   },
   {
     "name": "RubyMine",
     "productCode": "RM,PCWMP,PSI",
-    "iconClass": "icon-rm"
+    "iconClass": "icon-rm",
+    "version": "2024.1.x"
   },
   {
     "name": "WebStorm",
     "productCode": "WS,PCWMP,PSI",
-    "iconClass": "icon-ws"
+    "iconClass": "icon-ws",
+    "version": "2024.1.x"
   },
   {
     "name": "Rider",
     "productCode": "RD,PDB,PSI,PCWMP",
-    "iconClass": "icon-rd"
+    "iconClass": "icon-rd",
+    "version": "2024.1.x"
   },
   {
     "name": "CLion",
     "productCode": "CL,PSI,PCWMP",
-    "iconClass": "icon-cl"
+    "iconClass": "icon-cl",
+    "version": "2024.1.x"
   },
   {
     "name": "PyCharm",
     "productCode": "PC,PSI,PCWMP",
-    "iconClass": "icon-pc"
+    "iconClass": "icon-pc",
+    "version": "2024.1.x"
   },
   {
     "name": "GoLand",
     "productCode": "GO,PSI,PCWMP",
-    "iconClass": "icon-go"
+    "iconClass": "icon-go",
+    "version": "2024.1.x"
   },
   {
     "name": "DataSpell",
     "productCode": "DS,PSI,PDB,PCWMP",
-    "iconClass": "icon-ds"
-  },
-  {
-    "name": "DotCover",
-    "productCode": "DC",
-    "iconClass": "icon-dc"
+    "iconClass": "icon-ds",
+    "version": "2024.1.x"
   },
   {
     "name": "DotTrace",
     "productCode": "DNP,DP",
-    "iconClass": "icon-dpn"
+    "iconClass": "icon-dt",
+    "version": "2024.1.x"
   },
   {
     "name": "DotMemory",
     "productCode": "DM",
-    "iconClass": "icon-dm"
+    "iconClass": "icon-dm",
+    "version": "2024.1.x"
+  },
+  {
+    "name": "DotCover",
+    "productCode": "DC",
+    "iconClass": "icon-dc",
+    "version": "2024.1.x"
+  },
+  {
+    "name": "DotPeek",
+    "productCode": "DP",
+    "iconClass": "icon-dpn",
+    "version": "2024.1.x"
   },
   {
     "name": "Aqua",
     "productCode": "QA,PSI,PCWMP",
-    "iconClass": "icon-qa"
+    "iconClass": "icon-qa",
+    "version": "2024.1.x"
   },
   {
     "name": "RustRover",
     "productCode": "RR,PSI,PCWMP",
-    "iconClass": "icon-rr"
+    "iconClass": "icon-rr",
+    "version": "2024.1.x"
   }
 ]

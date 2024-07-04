@@ -13,11 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -25,7 +22,7 @@ public class PluginsContextHolder {
 
     private static final String PLUGIN_BASIC_URL = "https://plugins.jetbrains.com";
 
-    private static final String PLUGIN_LIST_URL = PLUGIN_BASIC_URL + "/api/searchPlugins?max=10000&offset=0&orderBy=name";
+    private static final String PLUGIN_LIST_URL = PLUGIN_BASIC_URL + "/api/searchPlugins?max=10000&offset=0&orderBy=name&pricingModels=PAID&excludeTags=Profiling";
 
     private static final String PLUGIN_INFO_URL = PLUGIN_BASIC_URL + "/api/plugins/";
 
@@ -59,41 +56,30 @@ public class PluginsContextHolder {
 
     public static void refreshJsonFile() {
         log.info("Init or Refresh plugin context from 'JetBrains.com' loading...");
-        CompletableFuture
-                .supplyAsync(PluginsContextHolder::pluginList)
-                .thenApply(PluginsContextHolder::pluginListFilter)
-                .thenApply(PluginsContextHolder::pluginConversion)
-                .thenAccept(PluginsContextHolder::overrideJsonFile)
-                .exceptionally(throwable -> {
-                    log.error("Plugin context init or refresh failed", throwable);
-                    return null;
-                });
+        try {
+            PluginList pluginList = PluginsContextHolder.pluginList();
+            // List<PluginList.Plugin> plugins = PluginsContextHolder.pluginListFilter(pluginList);
+            List<PluginCache> pluginCaches = PluginsContextHolder.pluginConversion(pluginList.getPlugins());
+            PluginsContextHolder.overrideJsonFile(pluginCaches);
+        } catch (Exception e) {
+            log.error("Plugin context init or refresh failed", e);
+        }
         log.info("Init or Refresh plugin context success !");
     }
 
     public static void overrideJsonFile(List<PluginCache> pluginCaches) {
-        pluginCacheList.addAll(pluginCaches);
+        pluginCacheList = pluginCaches;
         String jsonStr = JSONUtil.toJsonStr(pluginCacheList);
         try {
             FileUtil.writeString(jsonStr, pluginsJsonFile, StandardCharsets.UTF_8);
         } catch (IORuntimeException e) {
             throw new IllegalArgumentException(CharSequenceUtil.format("{} File write failed", PLUGIN_JSON_FILE_NAME), e);
         }
-
     }
 
     public static PluginList pluginList() {
-        return HttpUtil.createGet(PLUGIN_LIST_URL)
-                .thenFunction(response -> {
-                    try (InputStream is = response.bodyStream()) {
-                        if (!response.isOk()) {
-                            throw new IllegalArgumentException(CharSequenceUtil.format("{} The request failed = {}", PLUGIN_LIST_URL, response));
-                        }
-                        return IoUtil.readObj(is, PluginList.class);
-                    } catch (IOException e) {
-                        throw new IllegalArgumentException(CharSequenceUtil.format("{} The request io read failed", PLUGIN_LIST_URL), e);
-                    }
-                });
+        String body = HttpUtil.get(PLUGIN_LIST_URL);
+        return JSONUtil.toBean(body, PluginList.class);
     }
 
     public static List<PluginList.Plugin> pluginListFilter(PluginList pluginList) {
@@ -114,24 +100,14 @@ public class PluginsContextHolder {
                             .setProductCode(productCode)
                             .setName(plugin.getName())
                             .setPricingModel(plugin.getPricingModel())
-                            .setIcon(PLUGIN_BASIC_URL + plugin.getIcon())
-                            ;
+                            .setIcon(PLUGIN_BASIC_URL + plugin.getIcon());
                 })
                 .toList();
     }
 
     public static PluginInfo pluginInfo(Long pluginId) {
-        return HttpUtil.createGet(PLUGIN_INFO_URL + pluginId)
-                .thenFunction(response -> {
-                    try (InputStream is = response.bodyStream()) {
-                        if (!response.isOk()) {
-                            throw new IllegalArgumentException(CharSequenceUtil.format("{} The request failed = {}", PLUGIN_INFO_URL, response));
-                        }
-                        return IoUtil.readObj(is, PluginInfo.class);
-                    } catch (IOException e) {
-                        throw new IllegalArgumentException(CharSequenceUtil.format("{} The request io read failed", PLUGIN_LIST_URL), e);
-                    }
-                });
+        String body = HttpUtil.get(PLUGIN_INFO_URL + pluginId);
+        return JSONUtil.toBean(body, PluginInfo.class);
     }
 
 

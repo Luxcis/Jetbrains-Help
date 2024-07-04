@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Jetbrains-Help</title>
+    <link href="/css/normalize.css" media="all" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="/css/index.css">
     <link href="https://www.jetbrains.com/favicon.ico" rel="icon">
     <script src="/js/jquery.js" type="text/javascript"></script>
@@ -16,9 +17,6 @@
         🇨🇳 Download <a href="ja-netfilter" title="Download jetbra first">ja-netfilter.zip</a> , and configure
         your JetBrains's <a onclick="showVmoptins()">vmoptions!</a> <br>
         🇨🇳 Also you can <a onclick="showLicenseForm()">Refill license information</a> to customizer your license!<br>
-        <strong>🇨🇳 Please note that this page is only developed and used by <span
-                th:text="${defaults.getDefaultLicenseName()} + '/' + ${defaults.getDefaultAssigneeName()}"></span>
-            personally!</strong>
     </p>
     <div style="margin-left: 50px;">
         <label><input class="search" id="search" placeholder="Search Product or Plugin" type="text"></label>
@@ -34,6 +32,12 @@
                         <div class="avatar-wrapper flex items-center justify-center overflow-hidden shrink-0">
                             <div class="icon" th:classappend="${product.getIconClass()}" role="img"></div>
                         </div>
+                        <button class="toggle text-grey text-sm align-right relative" th:data-version="${product.getVersion()}"
+                                th:if="${product.getVersion()}">
+                            <ul class="dropdown">
+                                <li class="active"></li>
+                            </ul>
+                        </button>
                     </div>
                     <hr/>
                 </header>

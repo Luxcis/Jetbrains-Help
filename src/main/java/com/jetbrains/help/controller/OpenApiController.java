@@ -12,6 +12,7 @@ import com.jetbrains.help.context.ProductsContextHolder;
 import com.jetbrains.help.properties.JetbrainsHelpProperties;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,12 @@ public class OpenApiController {
         } else {
             return SaResult.error("授权码错误");
         }
+    }
+
+    @GetMapping("refreshPlugins")
+    public List<PluginsContextHolder.PluginCache> refreshPlugins() {
+        PluginsContextHolder.refreshJsonFile();
+        return PluginsContextHolder.pluginCacheList();
     }
 
     @PostMapping("generateLicense")

@@ -50,5 +50,6 @@ public class ProductsContextHolder {
         private String name;
         private String productCode;
         private String iconClass;
+        private String version;
     }
 }
