@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Slf4j
 @Configuration
-@ConditionalOnProperty(prefix = "help", name = "enable-auth")
+@ConditionalOnProperty(prefix = "auth", name = "enable")
 public class SecurityConfig implements WebMvcConfigurer {
     // 注册拦截器
     @Override

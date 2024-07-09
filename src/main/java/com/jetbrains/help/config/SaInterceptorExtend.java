@@ -72,7 +72,7 @@ public class SaInterceptorExtend extends SaInterceptor {
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().print(new SaResult(401, e.getMessage(), null));
             } else {
-                response.sendRedirect("auth.html");
+                response.sendRedirect("auth.do");
             }
             return false;
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class SaInterceptorExtend extends SaInterceptor {
                 response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
                 response.getWriter().print(SaResult.error(e.getMessage()));
             } else {
-                response.sendRedirect("auth.html");
+                response.sendRedirect("auth.do");
             }
             return false;
         }

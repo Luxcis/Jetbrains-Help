@@ -11,12 +11,23 @@ sa-token:
   is-share: false
   token-style: tik
   is-log: true
+logging:
+  file:
+    path: logs/${spring.application.name}
+  level:
+    root: error
+    com.jetbrains.help: debug
 help:
-  enable-auth: false
-  auth-code: 123
   product-id: dbeaver-ue
   product-version: 24.0
   default-email: Yamato@Azuelane.com
   default-license-name: Azuelane
   default-assignee-name: Yamato
   default-expiry-date: 2030-12-31
+auth:
+  enable: true
+  type: linuxDo
+  config:
+    clientId: 123
+    clientSecret: 321
+    redirectUri: http://127.0.0.1:20768/auth/callback
