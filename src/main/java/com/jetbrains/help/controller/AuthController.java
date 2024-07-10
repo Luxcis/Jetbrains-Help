@@ -6,12 +6,14 @@ import cn.dev33.satoken.util.SaResult;
 import cn.hutool.extra.spring.SpringUtil;
 import com.jetbrains.help.auth.AuthStrategy;
 import com.jetbrains.help.properties.AuthProperties;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -38,7 +40,9 @@ public class AuthController {
     }
 
     @RequestMapping("callback")
-    public SaResult callback(@RequestParam Map<String, String> params) {
-        return auth(params);
+    public SaResult callback(@RequestParam Map<String, String> params, HttpServletResponse resp) throws IOException {
+        auth(params);
+        resp.sendRedirect("/");
+        return SaResult.ok();
     }
 }
