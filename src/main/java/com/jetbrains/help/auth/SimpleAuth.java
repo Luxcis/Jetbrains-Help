@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,5 +32,10 @@ public class SimpleAuth implements AuthStrategy {
     @Override
     public void redirect(HttpServletResponse resp) throws IOException {
         resp.sendRedirect("auth.html");
+    }
+
+    @Override
+    public List<String> whitelistPage() {
+        return Collections.singletonList("auth.html");
     }
 }

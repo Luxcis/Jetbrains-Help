@@ -3,6 +3,7 @@ package com.jetbrains.help.context;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.PemUtil;
 import cn.hutool.crypto.SecureUtil;
@@ -16,6 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.jcajce.provider.digest.Keccak;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayOutputStream;
@@ -118,5 +120,11 @@ public class LicenseContextHolder {
         }
 
         return buffer.toByteArray();
+    }
+
+    public static String generateFinalShellLicense(String machineCode) {
+        String code = machineCode + "FF3Go(*Xvbb5s2";
+        Keccak.Digest384 digest384 = new Keccak.Digest384();
+        return HexUtil.encodeHexStr(digest384.digest(code.getBytes())).substring(12, 28);
     }
 }

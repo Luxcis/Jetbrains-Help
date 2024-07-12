@@ -25,7 +25,7 @@ help:
   default-assignee-name: Yamato
   default-expiry-date: 2030-12-31
 auth:
-  enable: true
+  enable: false
   type: linuxDo
   config:
     clientId: 123

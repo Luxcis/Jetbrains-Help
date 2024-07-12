@@ -82,14 +82,6 @@ public class PluginsContextHolder {
         return JSONUtil.toBean(body, PluginList.class);
     }
 
-    public static List<PluginList.Plugin> pluginListFilter(PluginList pluginList) {
-        return pluginList.getPlugins()
-                .stream()
-                .filter(plugin -> !PluginsContextHolder.pluginCacheList.contains(new PluginCache().setId(plugin.getId())))
-                .filter(plugin -> !CharSequenceUtil.equals(plugin.getPricingModel(), "FREE"))
-                .toList();
-    }
-
     public static List<PluginCache> pluginConversion(List<PluginList.Plugin> pluginList) {
         return pluginList
                 .stream()

@@ -3,6 +3,8 @@ package com.jetbrains.help.auth;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,4 +27,13 @@ public interface AuthStrategy {
      * @param resp 请求响应，用于重定向
      */
     void redirect(HttpServletResponse resp) throws IOException;
+
+    /**
+     * 白名单页面
+     *
+     * @return {@link List }<{@link String }>
+     */
+    default List<String> whitelistPage() {
+        return Collections.emptyList();
+    }
 }

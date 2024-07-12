@@ -370,6 +370,10 @@ body {
     background-image: url('../images/beaver.svg');
 }
 
+.icon-fs {
+    background-image: url('../images/finalshell.png');
+}
+
 .icon-ii {
     background-image: url('../images/intellij-idea.svg');
 }

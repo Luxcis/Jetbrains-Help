@@ -53,6 +53,16 @@ $(document).ready(function () {
             "expiryDate": licenseInfo.expiryDate,
             "productCode": productCode,
         };
+        if ("FinalShell" === productCode) {
+            const machineCode = prompt("请输入机器码：", localStorage.getItem('machineCode'))
+            if (machineCode != null && machineCode !== "") {
+                data["machineCode"] = machineCode
+                localStorage.setItem('machineCode', machineCode)
+            } else {
+                alert("未输入机器码，已取消后续操作")
+                return
+            }
+        }
         $.post('/generateLicense', JSON.stringify(data))
             .then(response => {
                 if (401 === response.code) {
@@ -86,7 +96,7 @@ $(document).ready(function () {
             await navigator.clipboard.writeText(val);
             return "The activation code has been copied";
         } else {
-            console.log(val);
+            alert("复制失败，请手动复制：" + val)
             return "The system does not support it, please go to the console to copy it manually";
         }
     };

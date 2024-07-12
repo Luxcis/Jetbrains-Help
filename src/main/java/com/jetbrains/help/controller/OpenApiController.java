@@ -23,20 +23,6 @@ import java.util.Set;
 public class OpenApiController {
     private final JetbrainsHelpProperties jetbrainsHelpProperties;
 
-    @Data
-    public static class GenerateLicenseReqBody {
-        private String licenseName;
-        private String assigneeName;
-        private String expiryDate;
-        private String productCode;
-    }
-
-    @GetMapping("refreshPlugins")
-    public List<PluginsContextHolder.PluginCache> refreshPlugins() {
-        PluginsContextHolder.refreshJsonFile();
-        return PluginsContextHolder.pluginCacheList();
-    }
-
     @PostMapping("generateLicense")
     public String generateLicense(@RequestBody GenerateLicenseReqBody body) {
         String license;
@@ -48,6 +34,8 @@ public class OpenApiController {
                     jetbrainsHelpProperties.getDefaultAssigneeName(),
                     jetbrainsHelpProperties.getDefaultEmail()
             );
+        } else if ("FinalShell".equals(body.productCode)) {
+            license = LicenseContextHolder.generateFinalShellLicense(body.machineCode);
         } else {
             Set<String> productCodeSet;
             if (CharSequenceUtil.isBlank(body.getProductCode())) {
@@ -76,5 +64,20 @@ public class OpenApiController {
             );
         }
         return license;
+    }
+
+    @GetMapping("refreshPlugins")
+    public List<PluginsContextHolder.PluginCache> refreshPlugins() {
+        PluginsContextHolder.refreshJsonFile();
+        return PluginsContextHolder.pluginCacheList();
+    }
+
+    @Data
+    public static class GenerateLicenseReqBody {
+        private String licenseName;
+        private String assigneeName;
+        private String expiryDate;
+        private String productCode;
+        private String machineCode;
     }
 }

@@ -6,6 +6,12 @@
     "version": "Ultimate"
   },
   {
+    "name": "FinalShell",
+    "productCode": "FinalShell",
+    "iconClass": "icon-fs",
+    "version": "专业版"
+  },
+  {
     "name": "IntelliJ IDEA",
     "productCode": "II,PCWMP,PSI",
     "iconClass": "icon-ii",
