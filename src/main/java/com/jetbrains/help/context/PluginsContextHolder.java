@@ -22,7 +22,7 @@ public class PluginsContextHolder {
 
     private static final String PLUGIN_BASIC_URL = "https://plugins.jetbrains.com";
 
-    private static final String PLUGIN_LIST_URL = PLUGIN_BASIC_URL + "/api/searchPlugins?max=10000&offset=0&orderBy=name&pricingModels=PAID&excludeTags=Profiling";
+    private static final String PLUGIN_LIST_URL = PLUGIN_BASIC_URL + "/api/searchPlugins?max=10000&offset=0&orderBy=id&pricingModels=PAID&pricingModels=FREEMIUM&excludeTags=Profiling";
 
     private static final String PLUGIN_INFO_URL = PLUGIN_BASIC_URL + "/api/plugins/";
 
