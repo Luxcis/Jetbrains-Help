@@ -87,9 +87,9 @@ $(document).ready(function () {
                     });
             })
             .catch(() => {
-                e.setAttribute('data-content', 'Copy failed!');
+                e.setAttribute('data-content', '复制失败!');
                 setTimeout(() => {
-                    e.setAttribute('data-content', 'Copy to clipboard');
+                    e.setAttribute('data-content', '复制到剪贴板');
                 }, 2000);
             });
     };
@@ -104,7 +104,7 @@ $(document).ready(function () {
             textArea.value = val
             // 使text area不在viewport，同时设置不可见
             document.body.appendChild(textArea)
-            textArea.focus()
+            // textArea.focus()
             textArea.select()
             return new Promise((res, rej) => {
                 document.execCommand('copy') ? res() : rej()
