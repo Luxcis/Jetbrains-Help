@@ -33,10 +33,14 @@ $(document).ready(function () {
 
     // Function to show VM options
     window.showVmoptins = function () {
-        $('#config').val("--add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED\n" +
-            "--add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED\n" +
-            "-javaagent:/(Your Path)/ja-netfilter/ja-netfilter.jar")
-        $('#mask, #vmoptions').show();
+        var text = "-javaagent:/(Your Path)/ja-netfilter/ja-netfilter.jar\n" +
+        "--add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED\n" +
+        "--add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED";
+        copyText(text)
+            .then((result) => {
+                $('#config').val(text);
+                $('#mask, #vmoptions').show();
+            });
     };
 
     // Function to copy license
@@ -71,14 +75,14 @@ $(document).ready(function () {
                 }
                 copyText(response)
                     .then(() => {
-                        e.setAttribute('data-content', 'Copied!');
+                        e.setAttribute('data-content', '复制成功!');
                     })
                     .catch(() => {
-                        e.setAttribute('data-content', 'Copy failed!');
+                        e.setAttribute('data-content', '复制失败!');
                     })
                     .finally(() => {
                         setTimeout(() => {
-                            e.setAttribute('data-content', 'Copy to clipboard');
+                            e.setAttribute('data-content', '复制到剪贴板');
                         }, 2000);
                     });
             })
@@ -93,11 +97,19 @@ $(document).ready(function () {
 // Function to copy text to clipboard
     const copyText = async (val) => {
         if (navigator.clipboard && navigator.permissions) {
-            await navigator.clipboard.writeText(val);
-            return "The activation code has been copied";
+            return navigator.clipboard.writeText(val);
         } else {
-            alert("复制失败，请手动复制：" + val)
-            return "The system does not support it, please go to the console to copy it manually";
+            console.log(val);
+            const textArea = document.createElement('textarea')
+            textArea.value = val
+            // 使text area不在viewport，同时设置不可见
+            document.body.appendChild(textArea)
+            textArea.focus()
+            textArea.select()
+            return new Promise((res, rej) => {
+                document.execCommand('copy') ? res() : rej()
+                textArea.remove()
+            })
         }
     };
 
