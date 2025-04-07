@@ -1,6 +1,7 @@
 package com.jetbrains.help;
 
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.jetbrains.help.context.AgentContextHolder;
 import com.jetbrains.help.context.CertificateContextHolder;
@@ -13,12 +14,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.*;
 
 import java.net.InetAddress;
 
-@Slf4j
+@Slf4j(topic = "源项目入口")
 @EnableScheduling
 @Import(SpringUtil.class)
 @SpringBootApplication
@@ -41,8 +41,8 @@ public class JetbrainsHelpApplication {
         String runSuccessWarn = """
                 \n
                 ====================================================================================
-                                         Jetbrains-Help Run Success~
-                                         address: %s
+                                         Jetbrains-Help 启动成功~
+                                         访问地址: %s
                 ====================================================================================
                 \n
                 """.formatted(address);
@@ -51,7 +51,7 @@ public class JetbrainsHelpApplication {
 
     @Scheduled(cron = "0 0 12 * * ?")
     public void refresh() {
-        PluginsContextHolder.refreshJsonFile();
+        ThreadUtil.execute(PluginsContextHolder::refreshJsonFile);
     }
 
 }

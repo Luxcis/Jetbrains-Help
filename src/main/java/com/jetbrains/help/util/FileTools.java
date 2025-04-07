@@ -6,7 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
+import java.io.*;
 
 public interface FileTools {
 
@@ -28,14 +28,14 @@ public interface FileTools {
         File file = getFile(path);
         if (ObjectUtil.isNotNull(application.getSource())) {
             ClassPathResource classPathResource = new ClassPathResource(path);
-            File classPathFile = FileUtil.file(classPathResource.getPath());
             if (classPathResource.exists() && !file.exists()) {
-                try {
-                    FileUtil.writeFromStream(classPathResource.getInputStream(), classPathFile);
+                try (InputStream inputStream = classPathResource.getInputStream()) {
+                    FileUtil.writeFromStream(inputStream, file);
                 } catch (Exception e) {
-                    throw new IllegalArgumentException(CharSequenceUtil.format("{} File read failed", classPathFile.getPath()), e);
+                    throw new IllegalArgumentException(
+                            CharSequenceUtil.format("{} 文件读取失败!", path), e
+                    );
                 }
-                FileUtil.copy(classPathFile, file, true);
             }
         }
         return file;

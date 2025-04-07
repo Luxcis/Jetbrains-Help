@@ -18,8 +18,9 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.util.concurrent.CompletableFuture;
 
-@Slf4j
+@Slf4j(topic = "代理上下文")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AgentContextHolder {
 
@@ -32,18 +33,18 @@ public class AgentContextHolder {
     private static File jaNetfilterZipFile;
 
     public static void init() {
-        log.info("Agent context init loading...");
+        log.info("初始化中...");
         jaNetfilterZipFile = FileTools.getFileOrCreat(JA_NETFILTER_FILE_PATH + ".zip");
         if (!FileTools.fileExists(JA_NETFILTER_FILE_PATH)) {
             unzipJaNetfilter();
             if (!powerConfHasInit()) {
-                log.info("Agent config init loading...");
+                log.info("配置初始化中...");
                 loadPowerConf();
                 zipJaNetfilter();
-                log.info("Agent config init success !");
+                log.info("配置初始化成功!");
             }
         }
-        log.info("Agent context init success !");
+        log.info("初始化成功!");
     }
 
     public static File jaNetfilterZipFile() {
@@ -56,7 +57,7 @@ public class AgentContextHolder {
         try {
             powerConfStr = IoUtil.readUtf8(FileUtil.getInputStream(powerConfFile));
         } catch (IORuntimeException e) {
-            throw new IllegalArgumentException(CharSequenceUtil.format("{} File read failed", POWER_CONF_FILE_NAME), e);
+            throw new IllegalArgumentException(CharSequenceUtil.format("{} 文件读取失败!", POWER_CONF_FILE_NAME), e);
         }
         return CharSequenceUtil.containsAll(powerConfStr, "[Result]", "[Args]", "EQUAL,");
     }
@@ -103,7 +104,7 @@ public class AgentContextHolder {
         try {
             FileUtil.writeString(configStr, powerConfFile, StandardCharsets.UTF_8);
         } catch (IORuntimeException e) {
-            throw new IllegalArgumentException(CharSequenceUtil.format("{} File write failed", POWER_CONF_FILE_NAME), e);
+            throw new IllegalArgumentException(CharSequenceUtil.format("{} 文件写入失败!", POWER_CONF_FILE_NAME), e);
         }
     }
 
