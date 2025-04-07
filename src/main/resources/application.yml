@@ -1,5 +1,5 @@
 server:
-  port: 20768
+  port: 10768
 spring:
   application:
     name: Jetbrains-Help

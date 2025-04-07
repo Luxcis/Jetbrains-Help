@@ -25,7 +25,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     // 注册拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        log.info("启用授权功能......");
+        log.info("启用{}授权功能......", authProperties.getType());
         AuthStrategy auth = SpringUtil.getBean(authProperties.getType(), AuthStrategy.class);
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
         registry.addInterceptor(new SaInterceptorExtend(handle -> StpUtil.checkLogin()))
