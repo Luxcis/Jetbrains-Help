@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j(topic = "插件上下文")
@@ -92,7 +92,7 @@ public class PluginsContextHolder {
                 .stream()
                 .parallel()
                 .map(plugin -> {
-                    String productCode = pluginInfo(plugin).getPurchaseInfo().getProductCode();
+                    String productCode = pluginInfo(plugin.getId()).getPurchaseInfo().getProductCode();
                     return new PluginCache()
                             .setId(plugin.getId())
                             .setProductCode(productCode)
@@ -109,7 +109,6 @@ public class PluginsContextHolder {
         String body = HttpUtil.get(PLUGIN_INFO_URL + pluginId);
         return JSONUtil.toBean(body, PluginInfo.class);
     }
-
 
     @Data
     public static class PluginCache {
