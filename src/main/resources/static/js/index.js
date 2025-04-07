@@ -34,8 +34,8 @@ $(document).ready(function () {
     // Function to show VM options
     window.showVmoptins = function () {
         var text = "-javaagent:/(Your Path)/ja-netfilter/ja-netfilter.jar\n" +
-        "--add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED\n" +
-        "--add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED";
+            "--add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED\n" +
+            "--add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED";
         copyText(text)
             .then((result) => {
                 $('#config').val(text);
@@ -100,16 +100,24 @@ $(document).ready(function () {
             return navigator.clipboard.writeText(val);
         } else {
             console.log(val);
+            const scrollX = window.scrollX;
             const textArea = document.createElement('textarea')
             textArea.value = val
+            // 防止滚动
+            textArea.style.position = 'fixed'
             // 使text area不在viewport，同时设置不可见
             document.body.appendChild(textArea)
             // textArea.focus()
             textArea.select()
-            return new Promise((res, rej) => {
-                document.execCommand('copy') ? res() : rej()
-                textArea.remove()
-            })
+            try {
+                const result = document.execCommand('copy');
+                return result ? Promise.resolve() : Promise.reject();
+            } catch (e) {
+                return Promise.reject(e);
+            } finally {
+                textArea.remove();
+                window.scrollTo(scrollX, 0);
+            }
         }
     };
 

@@ -31,7 +31,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptorExtend(handle -> StpUtil.checkLogin()))
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/**/index.html",
+                        "/**/auth.html",
                         "/**/*.js",
                         "/**/*.css",
                         "/**/*.svg",

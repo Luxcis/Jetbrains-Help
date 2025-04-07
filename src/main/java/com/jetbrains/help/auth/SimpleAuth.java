@@ -26,7 +26,7 @@ public class SimpleAuth implements AuthStrategy {
         if (authProperties.get("code").equals(params.get("code"))) {
             return UUID.randomUUID().toString(true);
         }
-        throw new Exception("验证码错误");
+        throw new Exception("密码错误");
     }
 
     @Override
